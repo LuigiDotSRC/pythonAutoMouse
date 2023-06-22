@@ -29,16 +29,19 @@ def autoMouseClick(numIterations, actiondelayseconds, screenWidth, screenHeight)
     horizontalLocation = int(screenWidth/2)
     veritcalLocation = int(screenHeight/2)
 
-    time.sleep(2) #safety delay
+    time.sleep(2) #safety delay -- can reach ~ 8 cps 
     for iter in range(numIterations):
-        pyautogui.click(horizontalLocation,veritcalLocation)
+        pyautogui.click(horizontalLocation,veritcalLocation,duration=0.01)
+        pyautogui.click(horizontalLocation,veritcalLocation,duration=0.01)
+        pyautogui.click(horizontalLocation,veritcalLocation,duration=0.01)
+        pyautogui.click(horizontalLocation,veritcalLocation,duration=0.01)
         print(f"click: {iter+1}/{numIterations}")
         time.sleep(actiondelayseconds)
         
 if __name__ == "__main__":
     # init variables 
-    numIterations = 4
-    actiondelayseconds = 2
+    numIterations = 20
+    actiondelayseconds = 0
     screenWidth, screenHeight = pyautogui.size()
     print(f"screen size: w{screenWidth}, h{screenHeight}")
 
