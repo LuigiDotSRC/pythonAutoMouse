@@ -43,7 +43,7 @@ if __name__ == "__main__":
     print(f"screen size: w{screenWidth}, h{screenHeight}")
 
     while(True):
-        validOptions = ["1","2","3","q"]
+        validOptions = ["1","2","q"]
 
         print('''
         OPTIONS:
