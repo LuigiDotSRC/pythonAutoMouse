@@ -1,92 +1,179 @@
+import tkinter as tk
+import ttkbootstrap as ttk
+
 import pyautogui
 import time
 from datetime import datetime
 
-def cornerMouseClick(numIterations, actiondelayseconds, screenWidth, screenHeight):
-    timestart = datetime.now().time()
-    for iter in range(numIterations):
-        print(f"---------iteration: {iter+1}/{numIterations}")
+def cornerClicks(numIterations, actiondelayseconds, screenWidth, screenHeight):
+    time.sleep(2)
+    intNumIterations = numIterations.get() 
+    intActionDelaySeconds = actiondelayseconds.get() 
+    output = ""
+
+    for iter in range(intNumIterations):
+        
+        output = f"---------iteration: {iter+1}/{intNumIterations}\n"
+        print(output)
+   
+        current_time = datetime.now().time()
+        time_string = current_time.strftime('%H:%M:%S')
+        text.insert(1.0,f"iteration: {iter+1} | time: {time_string}\n")
 
         mouseLocation = 10, 10 # top left 
         pyautogui.click(mouseLocation) 
         print(f"mouse location: {mouseLocation}")
-        time.sleep(actiondelayseconds)
+        time.sleep(intActionDelaySeconds)
 
         mouseLocation = screenWidth - 10, 10 # top right 
         pyautogui.click(mouseLocation) 
         print(f"mouse location: {mouseLocation}")
-        time.sleep(actiondelayseconds)
+        time.sleep(intActionDelaySeconds)
 
         mouseLocation = screenWidth - 10, screenHeight - 10 # bot right
         pyautogui.click(mouseLocation) 
         print(f"mouse location: {mouseLocation}")
-        time.sleep(actiondelayseconds)
+        time.sleep(intActionDelaySeconds)
 
         mouseLocation = 10, screenHeight - 10 # bot left
         pyautogui.click(mouseLocation) 
         print(f"mouse location: {mouseLocation}")
-        time.sleep(actiondelayseconds)
+        time.sleep(intActionDelaySeconds)
 
-    timeend = datetime.now().time()
-    print(f"--------- PROCESS FINISHED: {timeend}")
-    print(f"TIME START: {timestart}")
+def AutoClick(numIterations, actiondelayseconds, screenWidth, screenHeight):   
+    time.sleep(2)
+    intNumIterations = numIterations.get() 
+    intActionDelaySeconds = actiondelayseconds.get() 
+    output = ""
 
-def autoMouseClick(numIterations, actiondelayseconds, screenWidth, screenHeight):
-    horizontalLocation = int(screenWidth/2)
-    veritcalLocation = int(screenHeight/2)
+    for iter in range(intNumIterations):
+        
+        output = f"---------iteration: {iter+1}/{intNumIterations}\n"
+        print(output)
+   
+        current_time = datetime.now().time()
+        time_string = current_time.strftime('%H:%M:%S')
+        text.insert(1.0,f"iteration: {iter+1} | time: {time_string}\n")
 
-    time.sleep(2) #safety delay -- can reach ~ 8 cps 
-    for iter in range(numIterations):
+        horizontalLocation = int(screenWidth/2)
+        veritcalLocation = int(screenHeight/2)
+ 
         pyautogui.click(horizontalLocation,veritcalLocation,duration=0.01)
         pyautogui.click(horizontalLocation,veritcalLocation,duration=0.01)
         pyautogui.click(horizontalLocation,veritcalLocation,duration=0.01)
         pyautogui.click(horizontalLocation,veritcalLocation,duration=0.01)
         print(f"click: {iter+1}/{numIterations}")
-        time.sleep(actiondelayseconds)
+        time.sleep(intActionDelaySeconds)
+    
+def SmallMove(numIterations, actiondelayseconds, screenWidth, screenHeight):
+    intNumIterations = numIterations.get() 
+    intActionDelaySeconds = actiondelayseconds.get() 
+    output = ""
 
-def smallMove(numIterations, actiondelayseconds, screenWidth, screenHeight):  
-    timestart = datetime.now().time()
-    for iter in range(numIterations):
-        print(f"---------iteration: {iter+1}/{numIterations}")
+    for iter in range(intNumIterations):
+        
+        output = f"---------iteration: {iter+1}/{intNumIterations}\n"
+        print(output)
+
+        current_time = datetime.now().time()
+        time_string = current_time.strftime('%H:%M:%S')
+        text.insert(1.0,f"iteration: {iter+1} | time: {time_string}\n")
+
         pyautogui.move(5,0)
         pyautogui.move(-5,0)
-        time.sleep(actiondelayseconds)
-    
-    timeend = datetime.now().time()
-    print(f"--------- PROCESS FINISHED: {timeend}")
-    print(f"TIME START: {timestart}")
+        time.sleep(intActionDelaySeconds)    
 
-if __name__ == "__main__":
-    # init variables 
-    numIterations = 200
-    actiondelayseconds = 2
-    screenWidth, screenHeight = pyautogui.size()
-    print(f"screen size: w{screenWidth}, h{screenHeight}")
+# window 
+window = ttk.Window(themename = "darkly")
+window.title("Python Auto Mouse")
+window.geometry("500x400")
+window.resizable(False, False)
 
-    while(True):
-        validOptions = ["1","2","3","q"]
+# variables
+numIterations = tk.IntVar() 
+actionDelaySeconds = tk.IntVar()
+screenWidth, screenHeight = pyautogui.size()
 
-        print('''
-        OPTIONS:
-        1 -- Corner Clicks 
-        2 -- Auto Click
-        3 -- Small Move
-        q -- Quit
-        ''')
+# title 
+title_label = ttk.Label(master = window, text = "Python Auto Mouse", font = "Calibri 24 bold")
+title_label.pack()
 
-        option = input("Enter an option  > ")
-        
-        if(option not in validOptions):
-            print("Enter a valid option")
-        elif(option == "q"):
-            break
+# frame
+frame = ttk.Frame(
+    master = window
+)
+frame.pack()
 
-        else:
-            if(option == "1"):
-                cornerMouseClick(numIterations,actiondelayseconds,screenWidth,screenHeight)
-            elif(option == "2"):
-                autoMouseClick(numIterations,actiondelayseconds,screenWidth,screenHeight)
-            elif(option == "3"):
-                smallMove(numIterations,actiondelayseconds,screenWidth,screenHeight)
-    
-    print("quit")
+frame2 = ttk.Frame(
+    master = window
+)
+frame2.pack()
+
+# buttons 
+button1 = ttk.Button(
+    master = frame,
+    text = "Corner Clicks",
+    state = "normal",
+    width = "50",
+    command = lambda: cornerClicks(numIterations, actionDelaySeconds, screenWidth, screenHeight)
+)
+button1.pack(pady = 5)
+
+button2 = ttk.Button(
+    master = frame,
+    text = "Auto Click",
+    state = "normal",
+    width = "50",
+    command = lambda: AutoClick(numIterations, actionDelaySeconds, screenWidth, screenHeight)
+)
+button2.pack(pady = 5)
+
+button3 = ttk.Button(
+    master = frame,
+    text = "Small Move",
+    state = "normal",
+    width = "50",
+    command = lambda: SmallMove(numIterations, actionDelaySeconds, screenWidth, screenHeight)
+)
+button3.pack(pady = 5)
+
+#labels
+label1 = ttk.Label(
+    master = frame2, 
+    text = "Number of iterations: ",
+    font = "Calibri 12",
+)
+label1.grid(column = 1, row = 1)
+
+label2 = ttk.Label(
+    master = frame2, 
+    text = "Action Delay (Seconds): ",
+    font = "Calibri 12"
+)
+label2.grid(column = 1, row = 2)
+
+# entry fields
+entry1 = ttk.Entry(
+    master = frame2,
+    textvariable = numIterations,
+)
+entry1.grid(column = 2, row = 1)
+entry1.insert(1,"5")
+
+entry2 = ttk.Entry(
+    master = frame2,
+    textvariable = actionDelaySeconds,
+)
+entry2.grid(column = 2, row = 2)
+entry2.insert(1,"1")
+
+# output terminal 
+text = tk.Text(
+    master = window,
+    width = "60",
+    height = "10",
+)
+text.pack(pady = 5)
+
+# run
+window.mainloop()
